@@ -1,61 +1,119 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom';
-import styled from 'styled-components'
 import InputField from '../../Components/InputField/InputField';
+import { LoginBox, Form, InputControl, SubmitButton,ErrorText,InputControlbtn } from '../../Css/styledComponents'
 
 
-const LoginBox = styled.div`
-  max-width: 28rem;
-  width: 100%;
-  margin: 2rem auto;
-  padding: 2rem 2.5rem;
-  border: none;
-  outline: none;
-  border-radius: 0.35rem;
-  color: black;
-  background: white;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-		0 4px 6px -2px rgba(0, 0, 0, 0.05);
-`
-const InputControl = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.25rem;
-`
-const Form = styled.form`
-  width: 100%;
-  height: auto;
-  margin-top: 2rem;
-`
-
-const SubmitButton = styled.input`
-      font-family: inherit;
-      font-size: 1rem;
-      font-weight: 500;
-      line-height: inherit;
-      cursor: pointer;
-      min-width: 40%;
-      height: auto;
-      padding: 0.65rem 1.25rem;
-      border: none;
-      outline: none;
-      border-radius: 2rem;
-      color: white;
-      background: blue;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-		0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      &:disabled{
-        border: 1px solid #999999;
-        background-color: #cccccc;
-        color: #666666;
-        border: none;
-        cursor: not-allowed;
-      }
-`
 function SignUp() {
+  const [formState, setFormState] = useState({
+    email: null,
+    name: null,
+    password1: null,
+    password2: null,
+    errors: {
+      email: false,
+      emailMsg:'',
+      name: false,
+      nameMsg:'',
+      password1: false,
+      password1Msg:'',
+      password2: false,
+      password2Msg:'',
+
+    }
+  })
+
+  const [subButtonValid, setSubButtonValid] = useState(false)
+
+  const validEmailRegex = RegExp(
+    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+  );
+
+  const validateForm = (errors: any) => {
+    let valid = true;
+    // Object.values(errors).forEach((val:any) => {
+    //   val.length > 0 && (valid = false)
+    //   console.log(valid)
+    // });
+    if((errors.password1 == true && errors.password1Msg.length>0 ) || (errors.password2 == true && errors.password2Msg.length>0 ) || (errors.emailMsg.length>0 && errors.email == true)|| (errors.nameMsg.length>0 && errors.name == true)){
+      return false
+    }
+    else{
+      return true
+    }
+
+    // return valid;
+  };
+
+  const HandleChange = (event: any) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    let errors = formState.errors;
+
+    switch (name) {
+      case 'name': 
+        errors.nameMsg = 
+          value.length < 5
+            ? 'Name must be at least 5 characters long!'
+            : '';
+        errors.name = 
+          value.length < 5
+            ?true
+            : false;
+        break;
+      case 'email':
+        errors.emailMsg =
+          validEmailRegex.test(value)
+          ? ''
+          : 'Email is not valid!';
+        
+        errors.email =
+          validEmailRegex.test(value)
+          ? false
+          : true;
+        break;
+      case 'password1':
+        errors.password1Msg =
+          (value.length < 8 )
+            ? 'Password must be at least 8 characters long!'
+            : '';
+        errors.password1 =
+          (value.length < 8 )
+            ? true
+            : false;
+        break;
+      case 'password2':
+        errors.password2Msg =
+          (value.length < 8  )
+            ? 'Password must be at least 8 characters long!'
+            : '';
+        errors.password2 =
+          (value.length < 8 )
+            ? true
+            : false;
+        break;
+      default:
+        break;
+    }
+    setFormState(prevState => ({ ...prevState, [name]: value, errors }))
+    // if(validateForm(formState.errors)){
+    //   setSubButtonValid(true)
+    // }
+    // else{
+    //   setSubButtonValid(false)
+    // }
+    console.log(formState)
+  }
+  
+  const HandleSubmit = (event: any) => {
+    event.preventDefault();
+    
+    if (validateForm(formState.errors) && formState.password1 == formState.password2) {
+      console.info('Valid Form')
+    } else {
+      console.error('Invalid Form')
+    }
+  }
   return (
     <div>
     <LoginBox>
@@ -66,20 +124,27 @@ function SignUp() {
       </div>
       <Form name="signup">
         <InputControl >
-          <InputField InputType="text" StateName="name" PlaceHolder="Name" Id="name" />
+          <InputField inputType="text" stateName="name" valueState={formState.name} placeHolder="Name" handleChange={HandleChange} id="name"  />
         </InputControl>
+        {(formState.errors.nameMsg.length > 0 && formState.errors.name == true) ? <ErrorText>{formState.errors.nameMsg}</ErrorText> : null}
+        
         <InputControl >
-          <InputField InputType="email" StateName="email" PlaceHolder="Email" Id="email" />
+          <InputField inputType="email" stateName="email" valueState={formState.email} placeHolder="Email" handleChange={HandleChange} id="email" />
         </InputControl>
+        {(formState.errors.emailMsg.length > 0 && formState.errors.email == true) ? <ErrorText>{formState.errors.emailMsg}</ErrorText> : null}
+
         <InputControl className="input-control">
-          <InputField InputType="password" StateName="password1" PlaceHolder="Create Password" Id="password" />
+          <InputField inputType="password" stateName="password1" valueState={formState.password1} placeHolder="Create Password" handleChange={HandleChange} id="password1" />
         </InputControl>
+        {(formState.errors.password1Msg.length > 0 && formState.errors.password1 == true) ? <ErrorText>{formState.errors.password1Msg}</ErrorText> : null}
         <InputControl className="input-control">
-          <InputField InputType="password" StateName="password2" PlaceHolder="Confirm Password" Id="password" />
+          <InputField inputType="password" stateName="password2" valueState={formState.password2} placeHolder="Confirm Password" handleChange={HandleChange} id="password2" />
         </InputControl>
-        <InputControl className="input-control">
-          <SubmitButton type="submit" name="submit" className="input-submit" value="Sign Up"  />
-        </InputControl>
+        {(formState.errors.password2Msg.length > 0 && formState.errors.password2 == true) ? <ErrorText>{formState.errors.password2Msg}</ErrorText> : null}
+        
+        <InputControlbtn className="input-control">
+          <SubmitButton type="submit" name="submit" className="input-submit" value="Sign Up" onClick={HandleSubmit} />
+        </InputControlbtn>
       </Form>
     </LoginBox>
   </div>

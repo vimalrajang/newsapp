@@ -1,7 +1,131 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
+export const ErrorText = styled.span`
+color: red;
+display: inline-block;
+`
+export const SourceName = styled.div`
+  color: black;
+    display: block;
+    font-size: 0.7em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.4;
+`
+export const PublisedTime = styled.div`
+  color: black;
+    display: block;
+    font-size: 0.7em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    float: left;
+    opacity: 0.4;
+`
+export const LoginBox = styled.div`
+  max-width: 28rem;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 2rem 2.5rem;
+  border: none;
+  outline: none;
+  border-radius: 0.35rem;
+  color: black;
+  background: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+		0 4px 6px -2px rgba(0, 0, 0, 0.05);
+`
+export const InputControlField = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+`
+export const InputControl = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+`
+export const InputControlbtn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+`
+export const Form = styled.form`
+  width: 100%;
+  height: auto;
+  margin-top: 2rem;
+`
 
+export const SubmitButton = styled.input`
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: inherit;
+      cursor: pointer;
+      min-width: 40%;
+      height: auto;
+      padding: 0.65rem 1.25rem;
+      border: none;
+      outline: none;
+      border-radius: 2rem;
+      color: white;
+      background: black;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+		0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      &:disabled{
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    border: none;
+    cursor: not-allowed;
+    }
+`
+export const ListWrapper = styled.div`
+width: 100%;
+display: flex;
+justify-content: space-between;
+align-items: center;
+
+`
+export const ListIconWrapper = styled.div`
+margin: 5px 3px;
+cursor: pointer;
+`
+export const ListIconsWrapper = styled.div`
+padding: 10px;
+display: flex;
+float: right;
+`
+export const ListHeader = styled.h2`
+color: black;
+`
+export const ListDescription = styled.div`
+`
+export const ListImgContainer = styled.div`
+   position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    aspect-ratio: 16 / 9;
+    width: 20rem;
+`
+export const ListContentWrapper = styled.div`
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+`
+export const ListImg = styled.img`
+ 
+
+        width: 100%;
+    height: 100%;
+    object-fit: cover;
+`
 export const CardImgContainer = styled.div`
     width: 100%;
     position: relative;
@@ -31,7 +155,7 @@ export const CardTags = styled.div`
 export const Cards = styled.div`
      display: grid;
     position: relative;
-    width: min(100% - 2rem, 380px);
+    width: min(100% - 1rem, 380px);
     background-color: rgb(250,250,250);
     overflow: hidden;
     border-radius: 0.8em;
@@ -75,9 +199,9 @@ export const CardBody = styled.div`
   padding: 1em 1.5em;
   
 `
-export const CardTitle = styled.h3`
+export const CardTitle = styled.h5`
     margin: 0;
-  font-size: clamp(1.4rem, 4vw, 1.7rem);
+  font-size: clamp(1.4rem, 4vw, 1.1rem);
   text-transform: capitalize;
   color: var(--clr-neutral-800);
   width: 100%;
@@ -105,8 +229,8 @@ export const OutlineBtn = styled(Btn)`
     }
 `
 export const SolidBtn = styled(Btn)`
-  color: #fefefe !important;
-    background: $color-dark !important;
+  color: rgb(250,250,250) !important;
+    background: black !important;
     &:hover{
     background: $background-color !important;
 
@@ -114,7 +238,7 @@ export const SolidBtn = styled(Btn)`
 `
 export const Headers = styled.header`
     background: black;
-    color: rgb(250, 250, 250);
+    color: rgb(250, 250, 250) !important;
     height: 60px;
     line-height: 60px;
     width: 100vw;
@@ -130,10 +254,11 @@ export const Logo = styled.div`
     margin-left: 28px;
     font-size: 1.5em;
     height: 60px;
+    color: white;
     letter-spacing: 1px;
     text-transform: uppercase;
 `
-export const Ul= styled.ul`
+export const Ul = styled.ul`
     display: inline-block;
     float: right;
     list-style: none;
@@ -143,10 +268,14 @@ export const Ul= styled.ul`
     transition: transform 0.5s ease-out;
     -webkit-transition: transform 0.5s ease-out;
 `
-  export const Li = styled.li`
+export const Li = styled.li`
     display: inline-block;
   `
-export const HighlightBoxHeader = styled.h3`
+export const H3Center = styled.h3`
+text-align: center;
+text-transform: uppercase;
+`
+export const H2Center = styled.h3`
 text-align: center;
 `
 export const HighlightBox = styled.div`
@@ -162,6 +291,23 @@ export const HighlightBox = styled.div`
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
 		0 4px 6px -2px rgba(0, 0, 0, 0.05);
 `
+export const ListBox = styled.div`
+   max-width: 70rem;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 1.5rem 2rem;
+  border: none;
+  outline: none;
+  border-radius: 0.35rem;
+  color: black;
+  background: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+		0 4px 6px -2px rgba(0, 0, 0, 0.05);
+`
+export const CardBtnWrapper = styled.div`
+display: flex;
+justify-content: space-between;
+`
 export const Input = styled.input`
 font-family: inherit;
 font-size: 1rem;
@@ -176,7 +322,10 @@ border-radius: 2rem;
 color: black;
 background: #f1f5f9;
 `
-  export const NavLinks = styled(NavLink)`
+export const NavLinkLogo = styled(NavLink)`
+color:white;
+`
+export const NavLinks = styled(NavLink)`
     color: rgb(250, 250, 250);
     display: block;
     font-size: 0.7em;

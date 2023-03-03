@@ -11,6 +11,26 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.19.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.27.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.27.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Controllers\" />
+    <None Remove="Models\" />
+    <None Remove="Repositories\" />
+    <None Remove="DatabaseSettings\" />
+    <None Remove="DatabaseSettings\IDatabaseSettings\" />
+    <None Remove="Repositories\IRepositories\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Models\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="DatabaseSettings\" />
+    <Folder Include="DatabaseSettings\IDatabaseSettings\" />
+    <Folder Include="Repositories\IRepositories\" />
+  </ItemGroup>
 </Project>

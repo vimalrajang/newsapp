@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Cards,CardImgContainer,CardImg,CardTags,CardTag,CardBody,CardTitle,OutlineBtn,SolidBtn} from '../../Css/styledComponents'
+import {Cards,CardImgContainer,CardImg,CardTags,CardTag,CardBody,CardTitle,OutlineBtn,SolidBtn, CardBtnWrapper, SourceName, PublisedTime} from '../../Css/styledComponents'
 
 
-function Card() {
+function Card(props:any) {
+  const {source,author,title,description,publishedAt} = props.article
+  var d = new Date(publishedAt)
   return (
     <div>
           <Cards
@@ -11,9 +13,9 @@ function Card() {
             data-aos="slide-left"
             data-aos-delay="200"
           >
-            <CardImgContainer className="card__img-container">
+            {/* <CardImgContainer className="card__img-container">
               <CardImg
-                className="card__img"
+                // className="card__img"
                 src="https://images.unsplash.com/photo-1580757468214-c73f7062a5cb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8MTYlM0E5fGVufDB8fDB8fA%3D%3D&w=1000&q=80"
                 alt="unsplash random"
               />
@@ -22,12 +24,13 @@ function Card() {
                   tag
                 </CardTag>
               </CardTags>
-            </CardImgContainer>
+            </CardImgContainer> */}
             <CardBody className="card__body">
-              <CardTitle className="card__title">name</CardTitle>
-              <div className="btn-wrapper d-flex justify-content-around m-3">
-
-                <OutlineBtn
+              <CardTitle className="card__title">{title}</CardTitle>
+              <CardBtnWrapper className="btn-wrapper">
+                <SourceName>{author}</SourceName>
+                <PublisedTime>{String(d.getDate()).padStart(2, '0')}/{String(d.getMonth()+1).padStart(2, '0')}-{d.getHours()}:{d.getMinutes()}</PublisedTime>
+                {/* <OutlineBtn
                   className="outline btn"
                   onClick={() => console.log("sda")}
                 >
@@ -38,8 +41,9 @@ function Card() {
                   onClick={() => console.log("sda")}
                 >
                   Live Demo
-                </SolidBtn>
-              </div>
+                </SolidBtn> */}
+
+              </CardBtnWrapper>
             </CardBody>
           </Cards>
         </div>
