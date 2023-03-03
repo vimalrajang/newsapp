@@ -4,6 +4,10 @@ import {Headers,HeaderWrapper,Logo,Ul,Li,NavLinks} from '../../Css/styledCompone
 
   
 function Header() {
+    var token = window.localStorage.getItem("token")
+    var name =  window.localStorage.getItem("name")
+    var email =  window.localStorage.getItem("email")
+
     return (
         <Headers>
             <HeaderWrapper>
@@ -16,8 +20,17 @@ function Header() {
                     <Ul id="menu">
                         <Li><NavLinks to="/">Home</NavLinks></Li>
                         <Li><NavLinks to="/categories">Categories</NavLinks></Li>
-                        <Li><NavLinks to="/bookmarks">Bookmarks</NavLinks></Li>
-                        <Li><NavLinks to="/login">Login</NavLinks></Li>
+                        {
+                            (token == 'null' && name == 'null' && email == 'null')?
+                            <React.Fragment>
+                                <Li><NavLinks to="/login">Login</NavLinks></Li>
+                            </React.Fragment>
+                            :
+                            <React.Fragment>
+                                <Li><NavLinks to="/bookmarks">Bookmarks</NavLinks></Li>
+                                <Li><NavLinks to="/profile">{name}</NavLinks></Li>
+                            </React.Fragment>
+                        }
                     </Ul>
                 </div>
             </HeaderWrapper>

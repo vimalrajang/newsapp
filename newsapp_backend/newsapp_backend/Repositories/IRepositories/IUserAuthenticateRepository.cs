@@ -1,12 +1,12 @@
 ﻿using System;
-using newsapp_backend.Models;
+using newsapp_backend.Models.UserModels;
 
 namespace newsapp_backend.Repositories.IRepositories
 {
 	public interface IUserAuthenticateRepository
 	{
-		public string SignUp(Users user);
-		public string LoginI(UserLogin userLogin);
+		public UserTokenResponse SignUp(Users user);
+		public UserTokenResponse LoginIn(UserLogin userLogin);
     }
 }
 

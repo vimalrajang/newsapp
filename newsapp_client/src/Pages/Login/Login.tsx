@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import InputField from '../../Components/InputField/InputField';
-import { LoginBox, Form, InputControl, SubmitButton, ErrorText, InputControlField } from '../../Css/styledComponents'
-
-
+import { LoginBox, Form, InputControl, SubmitButton, ErrorText, InputControlField, InputControlbtn } from '../../Css/styledComponents'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 function Login() {
   const [formState, setFormState] = useState({
@@ -18,11 +19,29 @@ function Login() {
     }
   })
   const [subButtonValid, setSubButtonValid] = useState(false)
-
+  const nav = useNavigate();
   const validEmailRegex = RegExp(
-    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+    /^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$/i
   );
+    useEffect(()=>{
+      var token = window.localStorage.getItem("token");
+      var name = window.localStorage.getItem("name");
+      var email = window.localStorage.getItem("email");
+      if(token != "null"||name!="null"||email!="null"){
+        const header = {
+          'Authorization':  `Bearer ${token}`
+        }
+        axios.get("https://localhost:7035/AuthorizeUser/isuservalid",
+          {headers:header}
+        ).then(res=>{
+          if(res.data == "valid") {
+            nav("/")
+    window.location.reload();
 
+          }
+        })
+      }
+    },[])
 
   const validateForm = (errors: any) => {
     let valid = true;
@@ -86,11 +105,49 @@ function Login() {
     // }
     console.log(formState)
   }
-  
   const HandleSubmit = (event: any) => {
     event.preventDefault();
     if (validateForm(formState.errors)) {
-      console.info('Valid Form')
+      axios.post(`https://localhost:7035/AuthenticateUser/login`,{
+      email: formState.email,
+      password: formState.password
+      }).then((res:any)=>{
+        console.log(res.data)
+        if(res.data.token!=''){
+          window.localStorage.setItem("token",res.data.token)
+          if(formState.email){
+            window.localStorage.setItem("name",res.data.name)
+            window.localStorage.setItem("email",formState.email)
+          }
+          toast.success(res.data.message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
+            nav("/");
+            window.location.reload();
+
+        }
+        else{
+
+        toast.info(res.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+        }
+
+      })
     } else {
       console.error('Invalid Form')
     }
@@ -115,13 +172,13 @@ function Login() {
             <InputField inputType="password" stateName="password" valueState={formState.password} placeHolder="Password" Id="password" handleChange={HandleChange} />
           </InputControl>
           {(formState.errors.passwordMsg.length > 0 && formState.errors.password == true) ? <ErrorText>{formState.errors.passwordMsg}</ErrorText> : null}
-          <InputControl className="input-control">
-            <a href="#" className="text text-links">Forgot Password</a>
+          <InputControlbtn className="input-control">
             <SubmitButton type="submit" name="submit" className="input-submit" value="Login" onClick={HandleSubmit}
             // disabled={!subButtonValid} 
             />
-          </InputControl>
+          </InputControlbtn>
         </Form>
+      <ToastContainer/>
       </LoginBox>
     </div>
   )

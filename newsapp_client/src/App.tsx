@@ -7,6 +7,7 @@ import Signin from './Pages/SignUp/SignUp';
 import Header from './Components/Header/Header';
 import Categories from './Pages/Categories/Categories';
 import Bookmark from './Pages/Bookmarks/Bookmark';
+import Profile from './Pages/Profile/Profile';
 
 function App() {
   var apikey = "";
@@ -23,6 +24,7 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/bookmarks" element={<Bookmark />} />
+          <Route path="/profile" element={<Profile />} />
           {/* <Route path="/favorite" element={<Favorites />} /> */}
         </Routes>
       </Router>

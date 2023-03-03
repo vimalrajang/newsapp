@@ -13,6 +13,9 @@ export const SourceName = styled.div`
     text-transform: uppercase;
     opacity: 0.4;
 `
+export const H1Center = styled.h1`
+text-align: center;
+`
 export const PublisedTime = styled.div`
   color: black;
     display: block;

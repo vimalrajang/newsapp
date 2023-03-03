@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom';
 import InputField from '../../Components/InputField/InputField';
 import { LoginBox, Form, InputControl, SubmitButton,ErrorText,InputControlbtn } from '../../Css/styledComponents'
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function SignUp() {
   const [formState, setFormState] = useState({
@@ -24,9 +26,27 @@ function SignUp() {
   })
 
   const [subButtonValid, setSubButtonValid] = useState(false)
+  useEffect(()=>{
+    var token = window.localStorage.getItem("token");
+      var name = window.localStorage.getItem("name");
+      var email = window.localStorage.getItem("email");
+    if(token != "null"||name!="null"||email!="null"){
+      const header = {
+        'Authorization':  `Bearer ${token}`
+      }
+      axios.get("https://localhost:7035/AuthorizeUser/isuservalid",
+        {headers:header}
+      ).then(res=>{
+        if(res.data == "valid") {
+          nav("/")
+          window.location.reload();
 
+        }
+      })
+    }
+  },[])
   const validEmailRegex = RegExp(
-    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+    /^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$/i
   );
 
   const validateForm = (errors: any) => {
@@ -102,14 +122,54 @@ function SignUp() {
     // else{
     //   setSubButtonValid(false)
     // }
-    console.log(formState)
+    // console.log(formState)
   }
-  
+  var nav=useNavigate(); 
   const HandleSubmit = (event: any) => {
     event.preventDefault();
     
     if (validateForm(formState.errors) && formState.password1 == formState.password2) {
-      console.info('Valid Form')
+      axios.post(`https://localhost:7035/AuthenticateUser/signup`,{
+        name: formState.name,
+       email: formState.email,
+      password: formState.password1
+      }).then(res=>{
+        console.log(res.data)
+        if(res.data.token!=''){
+          window.localStorage.setItem("token",res.data.token)
+          if(formState.name && formState.email){
+            window.localStorage.setItem("name",formState.name)
+            window.localStorage.setItem("email",formState.email)
+          }
+          toast.success(res.data.message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
+            nav("/");
+            window.location.reload();
+
+        }
+        else{
+
+        toast.info(res.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+        }
+
+      })
     } else {
       console.error('Invalid Form')
     }
@@ -147,6 +207,7 @@ function SignUp() {
         </InputControlbtn>
       </Form>
     </LoginBox>
+    <ToastContainer/>
   </div>
   )
 }

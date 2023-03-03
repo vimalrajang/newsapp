@@ -43,7 +43,7 @@ function CardBoxWithImg(props: any) {
               {
                 data.articles.map((article: any, index: any) => {
                   return (
-                    <CardWithImg article={article} />
+                    <CardWithImg article={article} imgSrc={props.imgSrc}/>
                   )
                 })
               }

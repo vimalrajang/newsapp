@@ -1,5 +1,5 @@
 ﻿using System;
-namespace newsapp_backend.Models
+namespace newsapp_backend.Models.UserModels
 {
 	public class UserLogin
 	{

@@ -14,8 +14,8 @@ function CardWithImg(props:any) {
       <CardImgContainer className="card__img-container">
         <CardImg
           // className="card__img"
-          src="https://images.unsplash.com/photo-1580757468214-c73f7062a5cb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8MTYlM0E5fGVufDB8fDB8fA%3D%3D&w=1000&q=80"
-          alt="unsplash random"
+          src={props.imgSrc}
+          alt={props.imgSrc}
         />
         <CardTags className="card__tags">
           <CardTag className="card__tag" >
